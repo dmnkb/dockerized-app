@@ -1,12 +1,15 @@
 import { useEffect, useCallback, useState } from "react";
 
+const apiPath = window.location.protocol + window.location.hostname
+
 const TodoListCard = () => {
 	const [items, setItems] = useState(null);
 
 	useEffect( () => {
-		fetch('http://localhost/api/items')
+		fetch(apiPath + '/api/items')
 		.then(r => r.json())
 		.then(setItems);
+		console.log(window.location.hostname)
 	}, []);
 
 	const onNewItem = useCallback( newItem => { 
@@ -48,7 +51,7 @@ const AddItemForm = ({ onNewItem }) => {
   	const submitNewItem = e => {
     	e.preventDefault();
 		setSubmitting(true);
-		fetch('http://localhost/api/items', {
+		fetch(apiPath + '/api/items', {
 			method: 'POST',
 			body: JSON.stringify({ name: newItem }),
 			headers: { 'Content-Type': 'application/json' },
@@ -84,7 +87,7 @@ const AddItemForm = ({ onNewItem }) => {
 
 const ItemDisplay = ({ item, onItemUpdate, onItemRemoval }) => {
 	const toggleCompletion = () => {
-		fetch(`http://localhost/api/items/${item.id}`, {
+		fetch(apiPath + `/api/items/${item.id}`, {
 			method: 'PUT',
 			body: JSON.stringify({
 				name: item.name,
@@ -97,7 +100,7 @@ const ItemDisplay = ({ item, onItemUpdate, onItemRemoval }) => {
   	};
 
 	const removeItem = () => {
-		fetch(`http://localhost/api/items/${item.id}`, { method: 'DELETE' }).then(() =>
+		fetch(apiPath + `/api/items/${item.id}`, { method: 'DELETE' }).then(() =>
 			onItemRemoval(item),
       	);
   	};

@@ -4,7 +4,7 @@ const TodoListCard = () => {
 	const [items, setItems] = useState(null);
 
 	useEffect( () => {
-		fetch('http://localhost:3000/api/items')
+		fetch('http://localhost/api/items')
 		.then(r => r.json())
 		.then(setItems);
 	}, []);

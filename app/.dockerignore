@@ -1,5 +1,6 @@
-/build
+.gitignore
 .dockerignore
-**/.git
-**/.DS_Store
-**/node_modules
+Dockerfile
+build
+node_modules
+README.md

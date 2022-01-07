@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState } from "react";
 
-const apiPath = window.location.protocol + window.location.hostname
+const apiPath = window.location.hostname
 
 const TodoListCard = () => {
 	const [items, setItems] = useState(null);

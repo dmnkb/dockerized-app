@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState } from "react";
 
-const apiPath = window.location.hostname
+const apiPath = window.location.protocol + "//" + window.location.hostname
 
 const TodoListCard = () => {
 	const [items, setItems] = useState(null);
@@ -9,7 +9,7 @@ const TodoListCard = () => {
 		fetch(apiPath + '/api/items')
 		.then(r => r.json())
 		.then(setItems);
-		console.log(window.location.hostname)
+		console.log(apiPath + '/api/items')
 	}, []);
 
 	const onNewItem = useCallback( newItem => { 

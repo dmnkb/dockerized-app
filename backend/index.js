@@ -17,7 +17,7 @@ app.use((req, res, next) => {
 })
 
 app.get('/api', (req, res) => {
-  res.send('<h1>Backend Update 4</h1>')
+  res.send('<h1>Backend Update 5</h1>')
 });
 app.get('/api/items', getItems);
 app.post('/api/items', addItem);

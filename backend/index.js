@@ -11,6 +11,11 @@ app.use(express.json());
 app.use(cors());
 app.options('*', cors())
 
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store')
+  next()
+})
+
 app.get('/api', (req, res) => {
   res.send('<h1>Backend Update 4</h1>')
 });

@@ -12,7 +12,7 @@ app.use(cors());
 app.options('*', cors())
 
 app.get('/api', (req, res) => {
-  res.send('<h1>Backend</h1>')
+  res.send('<h1>Backend Update</h1>')
 });
 app.get('/api/items', getItems);
 app.post('/api/items', addItem);

@@ -24,17 +24,17 @@ services:
     restart: on-failure
 
   backend:
-    image: node:latest
+    image: backend
     container_name: express_backend
-    command: sh -c "yarn install && yarn start"
-    ports:
-      - 3000:3000
-    restart: on-failure
+    build: ./backend
     environment:
       MYSQL_HOST: mysql
       MYSQL_USER: root
       MYSQL_PASSWORD: secret
-      MYSQL_DB: todos    
+      MYSQL_DB: todos
+    ports:
+      - 3000:3000
+    restart: on-failure
 
   mysql:
     image: mysql:5.7

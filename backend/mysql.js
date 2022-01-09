@@ -21,6 +21,8 @@ async function init() {
     const password = PASSWORD_FILE ? fs.readFileSync(PASSWORD_FILE) : PASSWORD;
     const database = DB_FILE ? fs.readFileSync(DB_FILE) : DB;
 
+    // TODO: Port could be defined in docker-compose. Check if this is actually blocking
+    // otherwise implement try catch logic.
     await waitPort({ host, port : 3306});
 
     pool = mysql.createPool({

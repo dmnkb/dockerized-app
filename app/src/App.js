@@ -5,12 +5,11 @@ const apiPath = window.location.protocol + "//" + window.location.hostname
 const TodoListCard = () => {
 	const [items, setItems] = useState(null);
 
-	useEffect( () => {
-		fetch(apiPath + '/api/items')
-		.then(r => r.json())
-		.then(setItems);
-		console.log(apiPath + '/api/items')
-	}, []);
+	useEffect(() => {
+		fetch(apiPath + "/api/items")
+			.then(r => r.json())
+			.then(setItems)
+	}, [])
 
 	const onNewItem = useCallback( newItem => { 
 		setItems([...items, newItem]);
@@ -26,11 +25,13 @@ const TodoListCard = () => {
 		setItems([...items.slice(0, index), ...items.slice(index + 1)]);
 	}, [items]);
 	
-  	return !items ? "Loading..." :
+  	return !items ? ("Loading...") : (
 		<>
 			<AddItemForm onNewItem={onNewItem} />
 			{items.length === 0 && (
-				<p className="text-center">You have no todo items yet! Add one above!</p>
+				<p className="text-center">
+					You have no todo items yet! Add one above!!
+				</p>
 			)}
 			{items.map(item => (
 				<ItemDisplay
@@ -41,6 +42,7 @@ const TodoListCard = () => {
 				/>
 			))}
 		</>
+	)
 }
 
 const AddItemForm = ({ onNewItem }) => {
@@ -49,73 +51,73 @@ const AddItemForm = ({ onNewItem }) => {
   	const [submitting, setSubmitting] = useState(false);
 
   	const submitNewItem = e => {
-    	e.preventDefault();
-		setSubmitting(true);
-		fetch(apiPath + '/api/items', {
-			method: 'POST',
+		e.preventDefault()
+		setSubmitting(true)
+		fetch(apiPath + "/api/items", {
+			method: "POST",
 			body: JSON.stringify({ name: newItem }),
-			headers: { 'Content-Type': 'application/json' },
-      	})
-		.then(r => r.json())
-		.then(item => {
-			onNewItem(item);
-			setSubmitting(false);
-			setNewItem('');
-		});
-  	};
+			headers: { "Content-Type": "application/json" },
+		})
+			.then(r => r.json())
+			.then(item => {
+				onNewItem(item)
+				setSubmitting(false)
+				setNewItem("")
+			})
+	}
 
   	return (
 		<form onSubmit={submitNewItem}>
 			<input
 				value={newItem}
 				onChange={e => setNewItem(e.target.value)}
-				type="text"
-				placeholder="New Item"
-				aria-describedby="basic-addon1"
-        	/>
+				type='text'
+				placeholder='New Item 2'
+				aria-describedby='basic-addon1'
+			/>
 			<button
-				type="submit"
-				variant="success"
+				type='submit'
+				variant='success'
 				disabled={!newItem.length}
-				className={submitting ? 'disabled' : ''}
+				className={submitting ? "disabled" : ""}
 			>
-				{submitting ? 'Adding...' : 'Add'}
+				{submitting ? "Adding..." : "Add"}
 			</button>
-      	</form>
-  	);
+		</form>
+	)
 }
 
 const ItemDisplay = ({ item, onItemUpdate, onItemRemoval }) => {
 	const toggleCompletion = () => {
 		fetch(apiPath + `/api/items/${item.id}`, {
-			method: 'PUT',
+			method: "PUT",
 			body: JSON.stringify({
 				name: item.name,
 				completed: !item.completed,
 			}),
-			headers: { 'Content-Type': 'application/json' },
+			headers: { "Content-Type": "application/json" },
 		})
-		.then(r => r.json())
-		.then(onItemUpdate);
-  	};
+			.then(r => r.json())
+			.then(onItemUpdate)
+	}
 
 	const removeItem = () => {
-		fetch(apiPath + `/api/items/${item.id}`, { method: 'DELETE' }).then(() =>
-			onItemRemoval(item),
-      	);
-  	};
+		fetch(apiPath + `/api/items/${item.id}`, { method: "DELETE" }).then(
+			() => onItemRemoval(item)
+		)
+	}
 
 	return (
 		<>
 			<button onClick={toggleCompletion}>
-				{item.completed ? '✅' : '❌'}
+				{item.completed ? "✅" : "❌"}
 			</button>
 			{item.name}
-			<button onClick={removeItem} aria-label="Remove Item">
+			<button onClick={removeItem} aria-label='Remove Item'>
 				Löschen
 			</button>
-      	</>
-  	);
+		</>
+	)
 }
 
 const App = () => {

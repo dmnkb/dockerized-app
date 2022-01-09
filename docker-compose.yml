@@ -16,12 +16,15 @@ services:
   app:
     image: react_frontend
     container_name: app
-    build: ./app
+    build:
+      context: ./app
+      dockerfile: Dockerfile.prod
     depends_on:
       - backend
+      - mysql
     ports:
       - 8080:80
-    restart: on-failure
+    restart: unless-stopped 
 
   backend:
     image: backend
@@ -33,14 +36,14 @@ services:
       MYSQL_PASSWORD: secret
       MYSQL_DB: todos
     ports:
-      - 3000:3000
-    restart: on-failure
+      - 5000:5000
+    restart: unless-stopped
 
   mysql:
     image: mysql:5.7
     container_name: mysql
     volumes:
-      - mysql-data:/var/lib/mysql
+      - ./mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: todos

@@ -1,5 +1,5 @@
 # build environment
-FROM node:latest as build-stage
+FROM node:latest
 
 WORKDIR /backend
 
@@ -11,4 +11,4 @@ COPY ./ .
 
 CMD ["node", "index"]
 
-EXPOSE 3000
+EXPOSE 5000

@@ -31,7 +31,7 @@ services:
     container_name: express_backend
     build: 
       context: ./backend
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
     environment:
       MYSQL_HOST: mysql
       MYSQL_USER: root

@@ -24,12 +24,14 @@ services:
       - mysql
     ports:
       - 8080:80
-    restart: unless-stopped 
+    restart: unless-stopped
 
   backend:
     image: backend
     container_name: express_backend
-    build: ./backend
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile.prod
     environment:
       MYSQL_HOST: mysql
       MYSQL_USER: root

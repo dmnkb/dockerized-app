@@ -16,13 +16,13 @@ app.use((req, res, next) => {
   next()
 })
 
-app.get('/api', (req, res) => {
-  res.send('<h1>Backend Update 6</h1>')
-});
-app.get('/api/items', getItems);
-app.post('/api/items', addItem);
-app.put('/api/items/:id', updateItem);
-app.delete('/api/items/:id', deleteItem);
+app.get("/api", (req, res) => {
+	res.send("<h1>Backend Update 6</h1>")
+})
+app.get("/api/items", getItems)
+app.post("/api/items", addItem)
+app.put("/api/items/:id", updateItem)
+app.delete("/api/items/:id", deleteItem)
 
 
 db.init().then(() => {

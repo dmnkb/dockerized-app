@@ -14,8 +14,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image            
-      run: docker-compose -f docker-compose.prod.yml up --force-recreate --build -d && docker image prune -f
     - name: Add .env file
       run: |
         touch .env
@@ -24,3 +22,5 @@ jobs:
         echo MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }} >> .env
         echo MYSQL_DB=${{ secrets.MYSQL_DB }} >> .env
         cat .env
+    - name: Build the Docker image            
+      run: docker-compose -f docker-compose.prod.yml up --force-recreate --build -d && docker image prune -f

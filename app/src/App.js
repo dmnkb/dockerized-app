@@ -75,6 +75,7 @@ const AddItemForm = ({ onNewItem }) => {
 				placeholder='New Item 2'
 				aria-describedby='basic-addon1'
 			/>
+			Hallo Maus
 			<button
 				type='submit'
 				variant='success'

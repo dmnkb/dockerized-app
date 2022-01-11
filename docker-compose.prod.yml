@@ -45,7 +45,7 @@ services:
     image: mysql:5.7
     container_name: mysql
     volumes:
-      - ./mysql-data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: todos

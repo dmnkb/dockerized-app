@@ -26,20 +26,22 @@ services:
         - 3000:3000
   
   backend:
-    image: node:14-slim
+    image: backend
     container_name: backend
-    working_dir: /backend
+    stdin_open: true
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
     volumes:
-      - ./backend:/backend
-    command: sh -c "yarn install && yarn dev"
+      - ./backend/:/usr/src/backend
     environment:
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DB: ${MYSQL_DB}
     ports:
-      - 5000:5000
-
+        - 5000:5000
+    
   mysql:
     image: mysql:5.7
     container_name: mysql

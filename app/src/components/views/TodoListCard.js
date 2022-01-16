@@ -120,8 +120,4 @@ const ItemDisplay = ({ item, onItemUpdate, onItemRemoval }) => {
 	)
 }
 
-const App = () => {
-	return <TodoListCard />
-}
-
-export default App;
+export default TodoListCard

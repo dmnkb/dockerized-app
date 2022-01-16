@@ -14,7 +14,7 @@ services:
       - 80:80
 
   app:    
-    image: react_frontend
+    image: app
     container_name: app
     stdin_open: true
     build:
@@ -24,22 +24,21 @@ services:
       - ./app/:/usr/src/app
     ports:
         - 3000:3000
-
-  # Start backend using nodemon
+  
   backend:
-    image: node:latest
-    container_name: express_backend
+    image: node:14-slim
+    container_name: backend
     working_dir: /backend
     volumes:
       - ./backend:/backend
     command: sh -c "yarn install && yarn dev"
-    ports:
-      - 5000:5000
     environment:
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DB: ${MYSQL_DB}
+    ports:
+      - 5000:5000
 
   mysql:
     image: mysql:5.7
@@ -48,7 +47,9 @@ services:
       - ./mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: todos      
+      MYSQL_DATABASE: todos
+    ports:
+      - 33061:3306
 
 volumes:
   mysql-data:

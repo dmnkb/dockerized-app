@@ -8,7 +8,7 @@ const Login = () => {
     const [submitting, setSubmitting] = useState(false)
 	const [users, setUsers] = useState(null)
 
-    const submitUser = e => {
+    const addUser = e => {
 		e.preventDefault()
 		setSubmitting(true)
 		fetch(apiPath + "/api/users", {
@@ -18,29 +18,33 @@ const Login = () => {
                 password: "secret password"
             }),
 			headers: { "Content-Type": "application/json" },
+		})		
+		.then(() => {
+			setSubmitting(false)
+			setName("")
+			getUsers()
 		})
-			.then(r => r.json())
-			.then(name => {				
-				setSubmitting(false)
-				setName("")
-				getUsers()
-			})
+		.catch(error => { console.log(`Error adding user: ${error}`) })
 	}
 
-	// To be done in axios api.getUsers() ...
 	const getUsers = async () => {
-		fetch(apiPath + "/api/users")
+		fetch(apiPath + '/api/users')
 			.then(response => response.json())
 			.then(setUsers)
+			.catch(error => { console.log(`Error getting users: ${error}`) })
 	}
 
-	useEffect(() => {
-		getUsers()
-	}, [])
+	const removeUser = async (id) => {
+		fetch(apiPath + `/api/users/${id}`, { method: 'DELETE' })
+			.then(() => { getUsers() })
+			.catch(error => { console.log(`Error deleting user with ID ${id}: ${error}`) })
+	}
+
+	useEffect(() => getUsers(), [])
 
     return (
 		<>
-			<form onSubmit={submitUser}>
+			<form onSubmit={addUser}>
 				<input
 					value={name}
 					onChange={e => setName(e.target.value)}
@@ -59,7 +63,12 @@ const Login = () => {
 			</form>
 			<h2>Active users</h2>
 			<ul>
-				{users && users.map(user => <li key={user.id}>{user.username}</li>)}
+				{users && users.map(user => 
+					<li key={user.id}>
+						<h3>{user.username}</h3>
+						<button onClick={() => removeUser(user.id)}>Delete</button>
+					</li>
+				)}
 			</ul>
 		</>
     )

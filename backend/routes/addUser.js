@@ -6,7 +6,7 @@ const addUser = async (user) => {
 			'INSERT INTO users (id, username, password) VALUES (?, ?, ?)',
 			[user.id, user.username, user.password],
 			error => {
-				if (error) return reject('Error in express: ' + error)
+				if (error) return reject('DB Error: ' + error)
 				resolve()
 			}
 		)

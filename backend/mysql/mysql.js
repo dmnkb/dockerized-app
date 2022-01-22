@@ -25,7 +25,7 @@ export const getPool = () => {
 const gracefulShutdown = () => {
 	teardown()
 		.catch(() => {})
-		.then(() => process.exit())
+		.then(() => process.exit(0))
 }
 
 process.on('SIGINT', gracefulShutdown)

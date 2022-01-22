@@ -1,6 +1,16 @@
-// const db = require('../mysql');
+import { getPool } from "../mysql/mysql"
 
-// module.exports = async (req, res) => {
-//     await db.removeItem(req.params.id);
-//     res.sendStatus(200);
-// };
+const deleteUser = async (id) => {
+	return new Promise((resolve, reject) => {
+		getPool().query(
+			'DELETE FROM users WHERE id = ?',
+			[id],
+			error => {
+				if (error) return reject(`Error deleting user ID: ${id} ${error}`)
+				resolve()
+			}
+		)
+	})
+}
+
+export default deleteUser

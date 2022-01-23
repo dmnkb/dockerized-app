@@ -17,6 +17,7 @@ services:
     image: app
     container_name: app
     stdin_open: true
+    tty: true
     build:
       context: ./app
       dockerfile: Dockerfile.dev

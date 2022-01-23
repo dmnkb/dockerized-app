@@ -1,8 +1,13 @@
-import TodoListCard from "./views/TodoListCard";
-import Login from "./views/Login";
+import Login from './views/Login/Login'
+import { GlobalStyles } from 'twin.macro'
 
 const App = () => {
-	return <Login />
+	return (
+		<>
+			<GlobalStyles />
+			<Login />
+		</>
+	)
 }
 
 export default App

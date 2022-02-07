@@ -5,6 +5,7 @@ import StyledUserCard from '../../UserCard/styles'
 import StyledTextField from '../../common/form/TextField/styles'
 import StyledButton from '../../common/form/Button/styles'
 
+import Container from '../../common/layout/Container/styles'
 import { Lock } from '../../common/Illustrations/Illustrations'
 
 const Login = () => {
@@ -41,46 +42,39 @@ const Login = () => {
 	useEffect(() => loadUsers(), [])
 
 	return (
-		<div className='flex items-center h-screen w-full'>
-			<div className='grid grid-cols-6 gap-4 w-full'>
-				<div className='col-start-2 col-span-4 flex'>
-					<div className='w-1/2 flex relative'>
-						<Lock className='absolute h-full' />
-					</div>
-					<div className='w-1/2'>
-						<form onSubmit={submitForm}>
-							<StyledTextField
-								value={name}
-								onChange={e => setName(e.target.value)}
-								type='text'
-								placeholder='Please enter your name'
-							/>
-							<StyledButton
-								type='submit'
-								variant='success'
-								disabled={!name.length}
-								className={submitting ? 'disabled' : ''}
-							>
-								{submitting ? 'Adding...' : 'Add'}
-							</StyledButton>
-						</form>
-						<h2>Active users</h2>
-						<ul>
-							{users &&
-								users.map(user => (
-									<li key={user.id}>
-										<StyledUserCard
-											id={user.id}
-											name={user.username}
-											onDeleteUser={() => loadUsers()}
-										/>
-									</li>
-								))}
-						</ul>
-					</div>
-				</div>
+		<Container className="pt-32 grid grid-cols-12">
+			<div className='col-start-1 col-span-4'>
+				<form onSubmit={submitForm} className='mb-3'>
+					<StyledTextField
+						value={name}
+						onChange={e => setName(e.target.value)}
+						type='text'
+						placeholder='Please enter your name'
+					/>
+					<StyledButton
+						type='submit'
+						variant='success'
+						disabled={!name.length}
+						className={submitting ? 'disabled' : ''}
+					>
+						{submitting ? 'Adding...' : 'Add'}
+					</StyledButton>
+				</form>
+				<h2 className="text-xl mb-3">Active users</h2>
+				<ul className="flex flex-wrap -m-1.5">
+					{users &&
+						users.map(user => (
+							<li key={user.id}>
+								<StyledUserCard
+									id={user.id}
+									name={user.username}
+									onDeleteUser={() => loadUsers()}
+								/>
+							</li>
+						))}
+				</ul>
 			</div>
-		</div>
+		</Container>
 	)
 }
 

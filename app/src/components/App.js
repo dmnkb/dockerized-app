@@ -4,10 +4,10 @@ import './index.css'
 
 const App = () => {
 	return (
-		<>
+		<div className="flex justify-center w-full min-h-screen">
 			<GlobalStyles />
 			<Login />
-		</>
+		</div>
 	)
 }
 

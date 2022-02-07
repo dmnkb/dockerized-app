@@ -12,7 +12,7 @@ const StyledTextField = styled(TextField)`
         px-4 
         mr-4
         text-gray-700 
-        leading-tight
+        leading-loose
         focus:outline-none 
         focus:bg-white 
         focus:border-green-500

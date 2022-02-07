@@ -4,7 +4,7 @@ import StyledButton from "../common/form/Button/styles"
 const UserCard = ({ name, id, onDeleteUser, className }) => {
     return (
 		<div className={className}>
-			<h3>{name}</h3>
+			<h3>{name}</h3>			
 			<StyledButton variant={'delete'} onClick={() => {
 				api.deleteUser(id).then(data => {
 					if (data.error) {

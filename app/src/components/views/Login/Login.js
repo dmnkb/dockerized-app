@@ -3,6 +3,8 @@ import StyledUserCard from "../../UserCard/styles"
 import StyledTextField from "../../common/form/TextField/styles"
 import StyledButton from "../../common/form/Button/styles"
 
+import { Lock } from "../../common/Illustrations/Illustrations"
+
 const Login = () => {
 	
 	const [name, setName] = useState("")
@@ -46,37 +48,48 @@ const Login = () => {
 	useEffect(() => getUsers(), [])
 
     return (
-		<div className="container">
-			<div className="grid grid-cols-6 gap-4">
-				<div className="col-start-2 col-span-4">
-					<form onSubmit={addUser}>
-						<StyledTextField
-							value={name}
-							onChange={e => setName(e.target.value)}
-							type='text'
-							placeholder='Please enter your name'
-						/>
-						<StyledButton
-							type='submit'
-							variant='success'
-							disabled={!name.length}
-							className={submitting ? "disabled" : ""}
-						>
-							{submitting ? "Adding..." : "Add"}
-						</StyledButton>
-					</form>
-					<h2>Active users</h2>
-					<ul>
-						{users && users.map(user => 
-							<li key={user.id}>
-								<StyledUserCard userName={user.username} />
-								<StyledButton onClick={() => removeUser(user.id)}>Delete</StyledButton>
-							</li>
-						)}
-					</ul>
+		<div className="flex items-center h-screen w-full">
+			<div className="grid grid-cols-6 gap-4 w-full">
+				<div className="col-start-2 col-span-4 flex">
+					<div className="w-1/2 flex relative">
+						<Lock className="absolute h-full"/>
+					</div>
+					<div className="w-1/2">
+						<form onSubmit={addUser}>
+							<StyledTextField
+								value={name}
+								onChange={e => setName(e.target.value)}
+								type='text'
+								placeholder='Please enter your name'
+							/>
+							<StyledButton
+								type='submit'
+								variant='success'
+								disabled={!name.length}
+								className={submitting ? "disabled" : ""}
+							>
+								{submitting ? "Adding..." : "Add"}
+							</StyledButton>
+						</form>
+						<h2>Active users</h2>
+						<ul>
+							{users && users.map(user => 
+								<li key={user.id}>
+									<StyledUserCard userName={user.username} />
+									<StyledButton 
+										variant={"delete"}
+										onClick={() => removeUser(user.id)}
+										>
+											Delete
+										</StyledButton>
+								</li>
+							)}
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
+			
     )
 }
 

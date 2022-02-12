@@ -1,4 +1,5 @@
-import tw, { styled } from 'twin.macro'
+import styled from 'styled-components'
+import tw from 'twin.macro'
 import UserCard from './UserCard'
 
 const StyledUserCard = styled(UserCard)`

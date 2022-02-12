@@ -1,7 +1,12 @@
-import tw, { styled, css } from 'twin.macro'
+import styled, { css } from 'styled-components'
+import tw from 'twin.macro'
+
+interface StyledButtonProps {
+	variant?: string
+}
 
 const StyledButton = styled.button`
-	${props => css`
+	${(props: StyledButtonProps) => css`
 		${tw`
             px-4
             py-2
@@ -23,7 +28,8 @@ const StyledButton = styled.button`
 			${tw` border-primary-900 `}
 		}
 
-		${props.variant === 'delete' &&
+		${props.variant &&
+		props.variant === 'delete' &&
 		css`
 			${tw`
                 text-white

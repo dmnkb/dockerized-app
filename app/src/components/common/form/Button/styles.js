@@ -1,30 +1,41 @@
-import tw, { styled, css } from  'twin.macro'
+import tw, { styled, css } from 'twin.macro'
 
 const StyledButton = styled.button`
-    ${props => css`
-        ${tw`
-            px-4 
-            py-2 
-            text-sm 
+	${props => css`
+		${tw`
+            px-4
+            py-2
+            flex
+            items-center
+
+            text-sm
             font-medium
-            text-green-900 
-            bg-green-100            
+            text-white
+            bg-primary-500
             rounded-md
             
-            hover:bg-green-200
-            disabled:bg-gray-200
-            disabled:text-gray-500
+            hover:bg-primary-600
+            disabled:bg-eggshell-100
+            disabled:text-eggshell-600
         `}
 
-        ${props.variant === "delete" && css`
-            ${tw`
-                text-red-900 
-                bg-red-100
+		& > .spinner {
+			${tw` border-primary-900 `}
+		}
 
-                hover:bg-red-200 
+		${props.variant === 'delete' &&
+		css`
+			${tw`
+                text-white
+                bg-error-500
+
+                hover:bg-error-600 
             `}
-        `}
-    `}
+			& > .spinner {
+				${tw` border-error-900 `}
+			}
+		`}
+	`}
 `
 
 export default StyledButton

@@ -1,22 +1,30 @@
-import tw, { styled } from  'twin.macro'
+import tw, { styled, css } from 'twin.macro'
 import TextField from './TextField'
 
 const StyledTextField = styled(TextField)`
-	${tw`
-        bg-gray-200 
+	${tw`        
         appearance-none 
         border-2 
-        border-gray-200 
+        border-eggshell-900 
         rounded         
         py-2 
         px-4 
-        mr-4
-        text-gray-700 
+        mr-4        
+        text-primary-900 
         leading-loose
         focus:outline-none 
         focus:bg-white 
-        focus:border-green-500
+        ring-primary-500
+        ring-offset-2
+        focus:ring-2
     `}
+
+	&::placeholder {
+		${tw`
+            text-eggshell-700
+            focus:text-eggshell-900
+        `}
+	}
 `
 
 export default StyledTextField

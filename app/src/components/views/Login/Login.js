@@ -7,11 +7,12 @@ import StyledButton from '../../common/form/Button/styles'
 
 import Container from '../../common/layout/Container/styles'
 import { Lock } from '../../common/Illustrations/Illustrations'
+import StyledSpinner from '../../common/form/Spinner/styles'
 
 const Login = () => {
 	const [name, setName] = useState('')
 	const [submitting, setSubmitting] = useState(false)
-	const [users, setUsers] = useState(null)	
+	const [users, setUsers] = useState(null)
 
 	const loadUsers = () => {
 		api.getUsers().then(data => {
@@ -19,37 +20,38 @@ const Login = () => {
 				console.warn(`Error getting users: ${data.error}`)
 			} else {
 				setUsers(data.response.data)
-
 			}
 		})
 	}
 
-	const submitForm = (e) => {
+	const submitForm = e => {
 		e.preventDefault()
 		setSubmitting(true)
 
-		api.addUser(name, "secret password").then(data => {
+		api.addUser(name, 'secret password').then(data => {
 			if (data.error) {
 				console.warn(`Error adding user: ${data.error}`)
 			} else {
-				setSubmitting(false)
 				setName('')
 				loadUsers()
 			}
+			setSubmitting(false)
 		})
 	}
-	
+
 	useEffect(() => loadUsers(), [])
 
 	return (
-		<Container className="pt-32 grid grid-cols-12">
+		<Container className='pt-32 grid grid-cols-12 gap-4'>
 			<div className='col-start-1 col-span-4'>
-				<form onSubmit={submitForm} className='mb-3'>
+				<h2 className='text-xl mb-3'>Add users</h2>
+				<form onSubmit={submitForm} className='mb-3 flex'>
 					<StyledTextField
 						value={name}
 						onChange={e => setName(e.target.value)}
 						type='text'
 						placeholder='Please enter your name'
+						className='flex-1'
 					/>
 					<StyledButton
 						type='submit'
@@ -57,11 +59,11 @@ const Login = () => {
 						disabled={!name.length}
 						className={submitting ? 'disabled' : ''}
 					>
-						{submitting ? 'Adding...' : 'Add'}
+						Add
+						{submitting && <StyledSpinner />}
 					</StyledButton>
 				</form>
-				<h2 className="text-xl mb-3">Active users</h2>
-				<ul className="flex flex-wrap -m-1.5">
+				<ul className='flex flex-wrap -m-1.5'>
 					{users &&
 						users.map(user => (
 							<li key={user.id}>

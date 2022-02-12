@@ -1,4 +1,4 @@
-import tw, { styled } from  'twin.macro'
+import tw, { styled } from 'twin.macro'
 import UserCard from './UserCard'
 
 const StyledUserCard = styled(UserCard)`
@@ -8,14 +8,16 @@ const StyledUserCard = styled(UserCard)`
 
 		p-1
 		pl-3
-		m-1.5
+		m-0.5
+
+		text-eggshell-900
 
 		bg-white
 		border-2
-		border-gray-100
+		border-eggshell-400
 		rounded-md
-	`}	
-	
+	`}
+
 	h3 {
 		${tw`
 				
@@ -27,7 +29,6 @@ const StyledUserCard = styled(UserCard)`
 			ml-3
 		`}
 	}
-
 `
 
 export default StyledUserCard

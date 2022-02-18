@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import * as api from '../../../api/Api'
+import { User, Error, getUsers, addUser, deleteUser } from '../../../api/Api'
 
 import StyledUserCard from '../../UserCard/styles'
 import StyledTextField from '../../common/form/TextField/styles'
@@ -12,14 +12,14 @@ import StyledSpinner from '../../common/form/Spinner/styles'
 const Login = () => {
 	const [name, setName] = useState<string>('')
 	const [submitting, setSubmitting] = useState(false)
-	const [users, setUsers] = useState<[{}] | null>(null)
+	const [users, setUsers] = useState<User[] | null>(null)
 
 	const loadUsers = () => {
-		api.getUsers().then((data: any) => {
-			if (data.error) {
-				console.warn(`Error getting users: ${data.error}`)
+		getUsers().then(data => {
+			if (typeof data === 'string') {
+				console.warn(`Error getting users: ${data}`)
 			} else {
-				setUsers(data.response.data)
+				setUsers(data)
 			}
 		})
 	}
@@ -28,9 +28,9 @@ const Login = () => {
 		e.preventDefault()
 		setSubmitting(true)
 
-		api.addUser(name, 'secret password').then(data => {
-			if (data.error) {
-				console.warn(`Error adding user: ${data.error}`)
+		addUser(name, 'secret password').then(data => {
+			if (typeof data === 'string') {
+				console.warn(`Error adding user: ${data}`)
 			} else {
 				setName('')
 				loadUsers()

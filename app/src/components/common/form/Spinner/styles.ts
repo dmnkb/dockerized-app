@@ -6,24 +6,30 @@ const StyledSpinner = styled(Spinner)`
 	/* Define width and height */
 
 	${props => {
-		if (!props.size || props.size > 100 || props.size <= 0) {
-			console.warn(
-				"Property 'size' must be between 0 and 100. Width is set to 1em"
-			)
-			return css`
-				width: 1em;
-				height: 1em;
-			`
-		} else {
+		if (!props.size) {
 			return css`
 				width: ${props.size}px;
 				height: ${props.size}px;
 			`
+		} else {
+			if (props.size > 100 || props.size <= 0) {
+				return css`
+					width: ${props.size}px;
+					height: ${props.size}px;
+				`
+			} else {
+				console.warn(
+					"Property 'size' must be between 0 and 100. Width is set to 1em"
+				)
+				return css`
+					width: 1em;
+					height: 1em;
+				`
+			}
 		}
 	}}
 
-	${tw`
-        
+	${tw`        
         rounded-full
         border-2
         border-primary-500

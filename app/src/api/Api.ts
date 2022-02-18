@@ -1,27 +1,38 @@
 import axios from 'axios'
 
-const apiPath = window.location.protocol + '//' + window.location.hostname
+const PATH = window.location.protocol + '//' + window.location.hostname
 
-export const getUsers = () => {
-	return axios
-		.get(`${apiPath}/api/users`)
-		.then(response => ({ response, error: undefined }))
-		.catch(error => ({ resonse: undefined, error }))
+export interface User {
+	id: number
+	username: string
+	password: string
 }
 
-export const addUser = (name: string, password: string) => {
+export type Error = string
+
+export const getUsers = (): Promise<User[]> | Promise<Error> => {
 	return axios
-		.post(`${apiPath}/api/users`, {
+		.get(`${PATH}/api/users`)
+		.then(res => res.data as User[])
+		.catch(error => error)
+}
+
+export const addUser = (
+	name: string,
+	password: string
+): Promise<User> | Promise<Error> => {
+	return axios
+		.post(`${PATH}/api/users`, {
 			username: name,
 			password: password,
 		})
-		.then(response => ({ response, error: undefined }))
-		.catch(error => ({ response: undefined, error }))
+		.then(res => res.data as User)
+		.catch(error => error)
 }
 
 export const deleteUser = (id: number) => {
 	return axios
-		.delete(`${apiPath}/api/users/${id}`)
+		.delete(`${PATH}/api/users/${id}`)
 		.then(response => ({ response, error: undefined }))
 		.catch(error => ({ response: undefined, error }))
 }

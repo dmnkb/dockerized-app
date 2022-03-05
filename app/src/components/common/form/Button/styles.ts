@@ -9,19 +9,20 @@ const StyledButton = styled.button`
 	${(props: StyledButtonProps) => css`
 		${tw`
             px-4
-            py-2
-            flex
+            py-4
+            
             items-center
 
             text-sm
+            text-center
             font-medium
             text-white
             bg-primary-500
             rounded-md
             
             hover:bg-primary-600
-            disabled:bg-eggshell-100
-            disabled:text-eggshell-600
+            disabled:bg-primary-100
+            disabled:text-primary-500
         `}
 
 		& > .spinner {

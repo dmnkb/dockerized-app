@@ -1,6 +1,6 @@
-import { getPool } from "../mysql/mysql"
+import { getPool } from '../mysql/mysql'
 
-const addUser = async (user) => {
+const addUser = async user => {
 	return new Promise((resolve, reject) => {
 		getPool().query(
 			'INSERT INTO users (id, username, password) VALUES (?, ?, ?)',

@@ -9,8 +9,7 @@ const StyledTextField = styled(TextField)`
         border-eggshell-900 
         rounded         
         py-2 
-        px-4 
-        mr-4        
+        px-4                
         text-primary-900 
         leading-loose
         focus:outline-none 

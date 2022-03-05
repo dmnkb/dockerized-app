@@ -1,82 +1,102 @@
-import { useState, useEffect } from 'react'
-import { User, Error, getUsers, addUser, deleteUser } from '../../../api/Api'
+import { useState } from 'react'
+import axios from 'axios'
 
-import StyledUserCard from '../../UserCard/styles'
-import StyledTextField from '../../common/form/TextField/styles'
-import StyledButton from '../../common/form/Button/styles'
+import { signUp } from '../../../api/Api'
 
 import Container from '../../common/layout/Container/styles'
-import { Lock } from '../../common/Illustrations/Illustrations'
+import StyledTextField from '../../common/form/TextField/styles'
+import StyledButton from '../../common/form/Button/styles'
 import StyledSpinner from '../../common/form/Spinner/styles'
 
 const Login = () => {
-	const [name, setName] = useState<string>('')
 	const [submitting, setSubmitting] = useState(false)
-	const [users, setUsers] = useState<User[] | null>(null)
+	const [name, setName] = useState('')
+	const [password, setPassword] = useState('')
+	const [isSignUp, setIsSignUp] = useState(true) // change later
 
-	const loadUsers = () => {
-		getUsers().then(data => {
-			if (typeof data === 'string') {
-				console.warn(`Error getting users: ${data}`)
-			} else {
-				setUsers(data)
-			}
-		})
-	}
-
-	const submitForm = (e: React.SyntheticEvent) => {
+	const onSubmit = (e: React.SyntheticEvent) => {
 		e.preventDefault()
 		setSubmitting(true)
 
-		addUser(name, 'secret password').then(data => {
-			if (typeof data === 'string') {
-				console.warn(`Error adding user: ${data}`)
-			} else {
-				setName('')
-				loadUsers()
-			}
-			setSubmitting(false)
-		})
+		if (isSignUp) {
+			signUp(name, password).then((res: any) => {
+				if (axios.isAxiosError(res)) {
+					//
+				} else {
+					//
+				}
+			})
+			return
+		} else {
+			return
+		}
 	}
 
-	useEffect(() => loadUsers(), [])
+	const displaySwitchSignInSignUp = () => {
+		if (isSignUp) {
+			return (
+				<span className='text-l mt-2 text-left'>
+					Already member?
+					<a
+						href='#'
+						onClick={() => setIsSignUp(false)}
+						className='ml-1 text-primary-500'
+					>
+						Sign in instead
+					</a>
+				</span>
+			)
+		} else {
+			return (
+				<span className='text-l mt-2 text-left'>
+					Not a member yet?
+					<a
+						href='#'
+						onClick={() => setIsSignUp(true)}
+						className='ml-1 text-primary-500'
+					>
+						Sign up
+					</a>
+				</span>
+			)
+		}
+	}
 
 	return (
-		<Container className='pt-32 grid grid-cols-12 gap-4'>
-			<div className='col-start-1 col-span-4'>
-				<h2 className='text-xl mb-3'>Add users</h2>
-				<form onSubmit={submitForm} className='mb-3 flex'>
+		<Container className='grid grid-cols-12 gap-4 pt-3'>
+			<div className='col col-span-4 p-3'>
+				<h1 className='text-xl mb-3'>
+					{isSignUp ? 'Sign up' : 'Sign in'}
+				</h1>
+				<form onSubmit={onSubmit} className='flex flex-col'>
 					<StyledTextField
-						value={name}
-						onChange={(
-							e: React.FormEvent<HTMLInputElement>
-						): void => setName(e.currentTarget.value)}
 						type='text'
-						placeholder='Please enter your name'
-						className='flex-1'
+						placeholder='username'
+						className='mb-3'
+						onChange={(e: any) => setName(e.currentTarget.value)}
+						value={name}
+					/>
+					<StyledTextField
+						type='password'
+						placeholder='password'
+						className='mb-3'
+						onChange={(e: any) =>
+							setPassword(e.currentTarget.value)
+						}
+						value={password}
 					/>
 					<StyledButton
 						type='submit'
+						value='Send'
 						variant='success'
 						disabled={!name.length}
 						className={submitting ? 'disabled' : ''}
 					>
-						Add
+						Send
 						{submitting && <StyledSpinner />}
 					</StyledButton>
+					{displaySwitchSignInSignUp()}
 				</form>
-				<ul className='flex flex-wrap -m-1.5'>
-					{users &&
-						users.map((user: any) => (
-							<li key={user.id}>
-								<StyledUserCard
-									id={user.id}
-									name={user.username}
-									onDeleteUser={() => loadUsers()}
-								/>
-							</li>
-						))}
-				</ul>
 			</div>
 		</Container>
 	)

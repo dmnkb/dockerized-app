@@ -11,6 +11,8 @@ const StyledButton = styled.button`
             px-4
             py-4
             
+            flex
+            justify-center
             items-center
 
             text-sm
@@ -26,7 +28,7 @@ const StyledButton = styled.button`
         `}
 
 		& > .spinner {
-			${tw` border-primary-900 `}
+			${tw` border-primary-500 `}
 		}
 
 		${props.variant &&
@@ -35,7 +37,6 @@ const StyledButton = styled.button`
 			${tw`
                 text-white
                 bg-error-500
-
                 hover:bg-error-600 
             `}
 			& > .spinner {

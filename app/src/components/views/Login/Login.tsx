@@ -9,7 +9,7 @@ import StyledButton from '../../common/form/Button/styles'
 import StyledSpinner from '../../common/form/Spinner/styles'
 
 const Login = () => {
-	const [submitting, setSubmitting] = useState(false)
+	const [loading, setLoading] = useState(true)
 	const [name, setName] = useState('')
 	const [password, setPassword] = useState('')
 	const [isSignUp, setIsSignUp] = useState(true) // change later
@@ -18,14 +18,14 @@ const Login = () => {
 
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
-		setSubmitting(true)
+		setLoading(true)
 
 		if (isSignUp) {
 			try {
 				let res = await signUp(name, password)
-				// res will have type of User
+				setLoading(false)
 			} catch (err) {
-				// Handle error
+				setLoading(false)
 			}
 		} else {
 			return
@@ -90,10 +90,10 @@ const Login = () => {
 						value='Send'
 						variant='success'
 						disabled={!name.length}
-						className={submitting ? 'disabled' : ''}
+						className={loading ? 'disabled' : ''}
 					>
 						Send
-						{submitting && <StyledSpinner />}
+						{loading && <StyledSpinner />}
 					</StyledButton>
 					{displaySwitchSignInSignUp()}
 				</form>

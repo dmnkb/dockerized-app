@@ -15,8 +15,6 @@ export interface User {
 	password: string
 }
 
-type AnyError = AxiosError | Error
-
 const verboseError = (error: any) => {
 	if (window.location.hostname !== 'localhost') return
 	if (error.response) {
@@ -49,7 +47,7 @@ export const getUsers = (): Promise<User | AxiosError | Error> => {
 export const signUp = async (
 	username: string,
 	password: string
-): Promise<User | AnyError> => {
+): Promise<User> => {
 	try {
 		const res = await axiosClient.post('auth/signup', {
 			username: username,

@@ -9,10 +9,18 @@ import StyledButton from '../../common/form/Button/styles'
 import StyledSpinner from '../../common/form/Spinner/styles'
 
 const Login = () => {
-	const [loading, setLoading] = useState(true)
+	const [loading, setLoading] = useState(false)
 	const [name, setName] = useState('')
 	const [password, setPassword] = useState('')
 	const [isSignUp, setIsSignUp] = useState(true) // change later
+	const [signUpError, setSignUpError] = useState<string | null>(null)
+
+	enum MySQLErrorCodeMap {
+		ER_DUP_ENTRY = 'Username already taken.',
+	}
+	enum CustomErrorMap {
+		ERR_UNKNOWN = 'An unknown error occurred.',
+	}
 
 	const SignUpMap = {}
 
@@ -23,9 +31,22 @@ const Login = () => {
 		if (isSignUp) {
 			try {
 				let res = await signUp(name, password)
+				setName('')
+				setPassword('')
 				setLoading(false)
-			} catch (err) {
+				console.log('all good I guess')
+			} catch (err: any) {
 				setLoading(false)
+
+				if (Object.keys(MySQLErrorCodeMap).includes(err['code'])) {
+					console.log(
+						MySQLErrorCodeMap[
+							err['code'] as keyof typeof MySQLErrorCodeMap
+						]
+					)
+				} else {
+					console.log(CustomErrorMap.ERR_UNKNOWN)
+				}
 			}
 		} else {
 			return

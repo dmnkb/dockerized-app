@@ -47,17 +47,19 @@ export const getUsers = (): Promise<User | AxiosError | Error> => {
 export const signUp = async (
 	username: string,
 	password: string
-): Promise<User> => {
-	try {
-		const res = await axiosClient.post('auth/signup', {
-			username: username,
-			password: password,
-		})
-		return res.data as User
-	} catch (err) {
-		verboseError(err)
-		throw Error(JSON.stringify(err))
-	}
+): Promise<any> => {
+	return new Promise((resolve, reject) => {
+		const res = axiosClient
+			.post('auth/signup', {
+				username: username,
+				password: password,
+			})
+			.then(res => resolve(res.data as User))
+			.catch(err => {
+				verboseError(err)
+				reject(err.response.data)
+			})
+	})
 }
 
 export const addUser = (name: string, password: string): Promise<User> => {

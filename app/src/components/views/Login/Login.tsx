@@ -14,19 +14,19 @@ const Login = () => {
 	const [password, setPassword] = useState('')
 	const [isSignUp, setIsSignUp] = useState(true) // change later
 
-	const onSubmit = (e: React.SyntheticEvent) => {
+	const SignUpMap = {}
+
+	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
 		setSubmitting(true)
 
 		if (isSignUp) {
-			signUp(name, password).then((res: any) => {
-				if (axios.isAxiosError(res)) {
-					//
-				} else {
-					//
-				}
-			})
-			return
+			try {
+				let res = await signUp(name, password)
+				// res will have type of User
+			} catch (err) {
+				// Handle error
+			}
 		} else {
 			return
 		}

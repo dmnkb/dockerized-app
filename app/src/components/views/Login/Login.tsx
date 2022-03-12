@@ -111,7 +111,6 @@ const Login = () => {
 						value='Send'
 						disabled={!name.length}
 						className={loading || signUpError ? 'disabled' : ''}
-						variant={ButtonVariants.DELETE}
 					>
 						Send
 						{loading && <StyledSpinner />}

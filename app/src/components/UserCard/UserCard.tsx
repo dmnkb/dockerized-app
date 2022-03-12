@@ -23,7 +23,7 @@ const UserCard: React.FC<UserCardProps> = ({
 		<div className={className}>
 			<h3>{name}</h3>
 			<StyledButton
-				variant={'delete'}
+				// variant={'delete'}
 				onClick={() => {
 					setLoading(true)
 					api.deleteUser(id).then(data => {

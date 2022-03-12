@@ -1,8 +1,28 @@
+import { ButtonVariant } from 'react-bootstrap/esm/types'
 import styled, { css } from 'styled-components'
 import tw from 'twin.macro'
 
+export enum ButtonVariants {
+	DEFAULT = 'DEFAULT',
+	DELETE = 'DELETE',
+}
+
+const ButtonVariantsMap: any = {
+	DEFAULT: ``,
+	DELETE: css`
+		${tw`
+            text-white
+            bg-error-500
+            hover:bg-error-600 
+        `}
+		& > .spinner {
+			${tw` border-error-900 `}
+		}
+	`,
+}
+
 interface StyledButtonProps {
-	variant?: string
+	variant?: ButtonVariants
 }
 
 const StyledButton = styled.button`
@@ -31,18 +51,7 @@ const StyledButton = styled.button`
 			${tw` border-primary-500 `}
 		}
 
-		${props.variant &&
-		props.variant === 'delete' &&
-		css`
-			${tw`
-                text-white
-                bg-error-500
-                hover:bg-error-600 
-            `}
-			& > .spinner {
-				${tw` border-error-900 `}
-			}
-		`}
+		${props.variant && ButtonVariantsMap[props.variant]}
 	`}
 `
 

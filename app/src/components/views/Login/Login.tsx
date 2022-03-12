@@ -5,7 +5,7 @@ import { signUp } from '../../../api/Api'
 
 import Container from '../../common/layout/Container/styles'
 import StyledTextField from '../../common/form/TextField/styles'
-import StyledButton from '../../common/form/Button/styles'
+import StyledButton, { ButtonVariants } from '../../common/form/Button/styles'
 import StyledSpinner from '../../common/form/Spinner/styles'
 
 const Login = () => {
@@ -18,8 +18,14 @@ const Login = () => {
 	enum MySQLErrorCodeMap {
 		ER_DUP_ENTRY = 'Username already taken.',
 	}
-	enum CustomErrorMap {
-		ERR_UNKNOWN = 'An unknown error occurred.',
+
+	const isMySQLError = (err: string): boolean =>
+		Object.keys(MySQLErrorCodeMap).includes(err)
+
+	const getMySQLErrorMessage = (mySQLErrorCode: string) => {
+		return MySQLErrorCodeMap[
+			mySQLErrorCode as keyof typeof MySQLErrorCodeMap
+		]
 	}
 
 	const SignUpMap = {}
@@ -30,23 +36,16 @@ const Login = () => {
 
 		if (isSignUp) {
 			try {
-				let res = await signUp(name, password)
+				await signUp(name, password)
 				setName('')
 				setPassword('')
 				setLoading(false)
-				console.log('all good I guess')
 			} catch (err: any) {
+				let errorCode = err['code']
+				isMySQLError(errorCode)
+					? setSignUpError(getMySQLErrorMessage(errorCode))
+					: setSignUpError(`An unknown error occurred: ${errorCode}`)
 				setLoading(false)
-
-				if (Object.keys(MySQLErrorCodeMap).includes(err['code'])) {
-					console.log(
-						MySQLErrorCodeMap[
-							err['code'] as keyof typeof MySQLErrorCodeMap
-						]
-					)
-				} else {
-					console.log(CustomErrorMap.ERR_UNKNOWN)
-				}
 			}
 		} else {
 			return
@@ -106,12 +105,13 @@ const Login = () => {
 						}
 						value={password}
 					/>
+					{signUpError && <span>{signUpError}</span>}
 					<StyledButton
 						type='submit'
 						value='Send'
-						variant='success'
 						disabled={!name.length}
-						className={loading ? 'disabled' : ''}
+						className={loading || signUpError ? 'disabled' : ''}
+						variant={ButtonVariants.DELETE}
 					>
 						Send
 						{loading && <StyledSpinner />}

@@ -54,7 +54,7 @@ export const signUp = async (
 				username: username,
 				password: password,
 			})
-			.then(res => resolve(res.data as User))
+			.then(res => resolve(Object.freeze(res.data as User)))
 			.catch(err => {
 				verboseError(err)
 				reject(err.response.data)

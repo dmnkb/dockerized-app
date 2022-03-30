@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { User, Error, getUsers, addUser, deleteUser } from '../../api/Api'
+import { User, getUsers, addUser, deleteUser } from '../../api/Api'
 
 import StyledUserCard from '../UserCard/styles'
 import StyledTextField from '../common/form/TextField/styles'

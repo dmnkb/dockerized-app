@@ -5,8 +5,15 @@ const PATH = window.location.protocol + '//' + window.location.hostname
 const axiosClient = axios.create()
 axiosClient.defaults.baseURL = `${PATH}/api/v1`
 
-export interface Error {
-	message: string
+enum MySQLErrorCodeMap {
+	ER_DUP_ENTRY = 'Username already taken.',
+}
+
+const isMySQLError = (err: string): boolean =>
+	Object.keys(MySQLErrorCodeMap).includes(err)
+
+const getMySQLErrorMessage = (mySQLErrorCode: string) => {
+	return MySQLErrorCodeMap[mySQLErrorCode as keyof typeof MySQLErrorCodeMap]
 }
 
 export interface User {
@@ -35,30 +42,39 @@ const verboseError = (error: any) => {
 	console.log(error.config)
 }
 
-export const getUsers = (): Promise<User | AxiosError | Error> => {
-	return new Promise((resolve, reject) => {
-		axios
-			.get(`${PATH}/api/users`)
-			.then(res => resolve(res.data))
-			.catch(err => reject(verboseError(err)))
-	})
-}
-
 export const signUp = async (
 	username: string,
 	password: string
 ): Promise<any> => {
 	return new Promise((resolve, reject) => {
-		const res = axiosClient
+		axiosClient
 			.post('auth/signup', {
 				username: username,
 				password: password,
 			})
 			.then(res => resolve(Object.freeze(res.data as User)))
 			.catch(err => {
-				verboseError(err)
-				reject(err.response.data)
+				if (process.env.NODE_ENV === 'development') {
+					verboseError(err)
+				}
+				let errCode = err.response.data['code']
+				reject(
+					isMySQLError(errCode)
+						? getMySQLErrorMessage(errCode)
+						: `An unknown error occurred: ${errCode}`
+				)
 			})
+	})
+}
+
+// User
+
+export const getUsers = (): Promise<User | AxiosError> => {
+	return new Promise((resolve, reject) => {
+		axios
+			.get(`${PATH}/api/users`)
+			.then(res => resolve(res.data))
+			.catch(err => reject(verboseError(err)))
 	})
 }
 

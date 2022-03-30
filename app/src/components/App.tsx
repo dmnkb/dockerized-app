@@ -1,4 +1,4 @@
-import Login from './views/Login/Login'
+import Login from './views/AuthMask/AuthMask'
 import { GlobalStyles } from 'twin.macro'
 import './index.css'
 

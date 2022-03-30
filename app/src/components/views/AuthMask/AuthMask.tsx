@@ -2,21 +2,29 @@ import { useState } from 'react'
 import * as api from '../../../api/Api'
 import Container from '../../common/layout/Container/styles'
 import StyledTextField from '../../common/form/TextField/styles'
-import StyledButton, { ButtonVariants } from '../../common/form/Button/styles'
+import StyledButton from '../../common/form/Button/styles'
 import StyledSpinner from '../../common/form/Spinner/styles'
 
-const Login = () => {
+enum AuthType {
+	LOGIN = 'LOGIN',
+	SIGNUP = 'SIGNUP',
+}
+
+const AuthMask = () => {
 	const [loading, setLoading] = useState(false)
 	const [name, setName] = useState('')
 	const [password, setPassword] = useState('')
-	const [isSignUp, setIsSignUp] = useState(true) // change later
+	const [authType, setAuthType] = useState<AuthType>(AuthType.LOGIN)
 	const [signUpError, setSignUpError] = useState<string | null>(null)
 
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
 		setLoading(true)
 
-		if (isSignUp) {
+		if (authType === AuthType.LOGIN) {
+			setSignUpError('Feature not available yet')
+			setLoading(false)
+		} else {
 			try {
 				await api.signUp(name, password)
 				setName('')
@@ -26,35 +34,33 @@ const Login = () => {
 				setSignUpError(err)
 				setLoading(false)
 			}
-		} else {
-			return
 		}
 	}
 
 	const displaySwitchSignInSignUp = () => {
-		if (isSignUp) {
+		if (authType === AuthType.LOGIN) {
 			return (
 				<span className='text-l mt-2 text-left'>
-					Already member?
+					Not a member yet?
 					<a
 						href='#'
-						onClick={() => setIsSignUp(false)}
+						onClick={() => setAuthType(AuthType.SIGNUP)}
 						className='ml-1 text-primary-500'
 					>
-						Sign in instead
+						Sign up
 					</a>
 				</span>
 			)
 		} else {
 			return (
 				<span className='text-l mt-2 text-left'>
-					Not a member yet?
+					Already member?
 					<a
 						href='#'
-						onClick={() => setIsSignUp(true)}
+						onClick={() => setAuthType(AuthType.LOGIN)}
 						className='ml-1 text-primary-500'
 					>
-						Sign up
+						Sign in instead
 					</a>
 				</span>
 			)
@@ -65,7 +71,7 @@ const Login = () => {
 		<Container className='grid grid-cols-12 gap-4 pt-3'>
 			<div className='col col-span-4 p-3 col-start-5'>
 				<h1 className='text-xl mb-3'>
-					{isSignUp ? 'Sign up' : 'Sign in'}
+					{authType === AuthType.SIGNUP ? 'Sign up' : 'Sign in'}
 				</h1>
 				<form onSubmit={onSubmit} className='flex flex-col'>
 					<StyledTextField
@@ -101,4 +107,4 @@ const Login = () => {
 	)
 }
 
-export default Login
+export default AuthMask

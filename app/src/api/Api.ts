@@ -7,6 +7,7 @@ axiosClient.defaults.baseURL = `${PATH}/api/v1`
 
 enum MySQLErrorCodeMap {
 	ER_DUP_ENTRY = 'Username already taken.',
+	ER_BAD_FIELD_ERROR = 'ER_BAD_FIELD_ERROR',
 }
 
 const isMySQLError = (err: string): boolean =>
@@ -53,6 +54,31 @@ export const signUp = async (
 				password: password,
 			})
 			.then(res => resolve(Object.freeze(res.data as User)))
+			.catch(err => {
+				if (process.env.NODE_ENV === 'development') {
+					verboseError(err)
+				}
+				let errCode = err.response.data['code']
+				reject(
+					isMySQLError(errCode)
+						? getMySQLErrorMessage(errCode)
+						: `An unknown error occurred: ${errCode}`
+				)
+			})
+	})
+}
+
+export const signIn = async (
+	username: string,
+	password: string
+): Promise<any> => {
+	return new Promise((resolve, reject) => {
+		axiosClient
+			.post('auth/signin', {
+				username: username,
+				password: password,
+			})
+			.then(res => resolve(Object.freeze(res.data as User))) // Recieve session token
 			.catch(err => {
 				if (process.env.NODE_ENV === 'development') {
 					verboseError(err)

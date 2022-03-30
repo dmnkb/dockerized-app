@@ -22,8 +22,16 @@ const AuthMask = () => {
 		setLoading(true)
 
 		if (authType === AuthType.LOGIN) {
-			setSignUpError('Feature not available yet')
-			setLoading(false)
+			try {
+				let resp = await api.signIn(name, password)
+				console.log(resp)
+				setName('')
+				setPassword('')
+				setLoading(false)
+			} catch (err: any) {
+				setSignUpError(err)
+				setLoading(false)
+			}
 		} else {
 			try {
 				await api.signUp(name, password)

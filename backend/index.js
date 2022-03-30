@@ -5,7 +5,7 @@ const uuid = require('uuid/v4')
 
 import { init } from './mysql/mysql'
 import addUser from './routes/addUser'
-import getUsers from './routes/getUsers'
+import getUser from './routes/getUser'
 import deleteUser from './routes/deleteUser'
 
 import login from './routes/login'
@@ -75,7 +75,23 @@ app.post('/api/v1/auth/signup', (req, res) => {
 })
 
 app.post('/api/v1/auth/signin', (req, res) => {
-	// Magic
+	const reqUser = {
+		id: uuid(),
+		username: req.body.username,
+		password: req.body.password,
+	}
+	getUser(reqUser.username)
+		.then(user => {
+			if (user[0].password === reqUser.password) {
+				res.send(200)
+			} else {
+				res.send(401)
+			}
+		})
+		.catch(error => {
+			console.warn(error)
+			res.status(400).send(error)
+		})
 })
 
 // app.post("/api/items", addItem)

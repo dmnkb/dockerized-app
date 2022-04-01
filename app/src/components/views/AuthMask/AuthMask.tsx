@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import * as api from '../../../api/Api'
+import { useStore } from '../../../Store'
 import Container from '../../common/layout/Container/styles'
 import StyledTextField from '../../common/form/TextField/styles'
 import StyledButton from '../../common/form/Button/styles'
@@ -17,6 +18,8 @@ const AuthMask = () => {
 	const [authType, setAuthType] = useState<AuthType>(AuthType.LOGIN)
 	const [signUpError, setSignUpError] = useState<string | null>(null)
 
+	const { loggedIn, setLoggedIn } = useStore()
+
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
 		setLoading(true)
@@ -25,6 +28,7 @@ const AuthMask = () => {
 			try {
 				let resp = await api.signIn(name, password)
 				console.log(resp)
+				setLoggedIn(true)
 				setName('')
 				setPassword('')
 				setLoading(false)
@@ -81,6 +85,7 @@ const AuthMask = () => {
 				<h1 className='text-xl mb-3'>
 					{authType === AuthType.SIGNUP ? 'Sign up' : 'Sign in'}
 				</h1>
+				<h2>Logged in: {loggedIn ? 'Yes' : 'No'}</h2>
 				<form onSubmit={onSubmit} className='flex flex-col'>
 					<StyledTextField
 						type='text'

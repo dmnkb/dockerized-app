@@ -31,7 +31,7 @@ services:
         stdin_open: true
         build:
             context: ./backend
-            dockerfile: Dockerfile.dev
+            dockerfile: Dockerfile.devdev
         volumes:
             - ./backend/:/usr/src/backend
         environment:
@@ -41,6 +41,18 @@ services:
             MYSQL_DB: ${MYSQL_DB}
         ports:
             - 5000:5000
+
+    db:
+        image: postgres
+        container_name: db
+        environment:
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_DB: dockerized-app-db
+        volumes:
+            - ./pgdata:/var/lib/postgresql/data
+        ports:
+            - 5432:5432
 
     mysql:
         image: mysql:5.7

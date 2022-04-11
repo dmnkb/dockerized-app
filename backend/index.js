@@ -7,8 +7,6 @@ import { init } from './mysql/mysql'
 import addUser from './routes/addUser'
 import getUser from './routes/getUser'
 
-import login from './routes/login'
-
 app.use(express.json())
 app.use(cors())
 app.options('*', cors())
